@@ -1,7 +1,7 @@
 ## Intersystem Cache
 
 ### Save image to database
-
+---
         Set stream=##class(%Stream.FileBinary).%New()
         Set sc=stream.LinkToFile("/usr/cache/dsa/clb/def/hst.jpg")
         If ($$$ISERR(sc)) Throw sc
@@ -11,7 +11,7 @@
         If ($$$ISERR(sc)) Throw sc
 
 ### Try Catch
-
+---
         Try {
             Set sc = $$$OK
             Set sc = ...
@@ -39,11 +39,11 @@
         }
 
 ### Create a namespace in SMP
-
+---
         ENSEMBLE -> System Administration -> System Configuration -> Namespaces
 
 ### ODBC vs ODBC35
-
+---
 When I install, there are two drivers (CacheODBC and CacheODBC35). What does this mean?
 
 When you do the install, there are 2 drivers – CacheODBC and CacheODBC35. These support different levels of the ODBC standard. The first support version 2.5 and the second support version 3.5. The ODBC driver Manager will convert 3.5 requests to the older 2.5 automatically, so in most cases you can use either driver.
@@ -51,7 +51,7 @@ When you do the install, there are 2 drivers – CacheODBC and CacheODBC35. Thes
 -- source: Cache Website
 
 ### OBDC Logging
-
+---
 ODBC Log
 When checked, enables ODBC client driver logging. 
 
@@ -60,8 +60,86 @@ The log file is called CacheODBC.log.
 By default, the location of file is %PUBLIC%\Logs\, where the %PUBLIC% syntax specifies that the path is based on the PUBLIC environment variable (which is defined by default on some Windows systems). For older versions of Windows, the file is stored in either the Windows or WinNT directory. You can also specify a custom path and file using the CACHEODBCTRACEFILE environment variable.
 
 ### ERROR #6022: Gateway failed: PrepareW.
-
+---
 This might be because of a non-existant table in your SQL query, but could also be because of other errors.
 
 To see the actual error, enable 'OBDC Logging' checkbox in the ODBC configuration.
 
+### \<UNDEFINED>^DW.Modules.Pmi.Person.1 *resultSet
+---
+You may have variabled set in your debugger 'watch'.
+
+So just delete or update these watch variables.
+
+###  Search/Find column/fields in database
+---
+        SELECT parent->SqlTableName 
+        FROM %dictionary.compiledproperty
+        WHERE SqlFieldName='Surname'
+
+### Default values for Cache fields/properties
+---
+
+        Class Package.ClassName Extends %Persistant
+        {
+            Property Modified As %Library.TimeStamp [ InitialExpression = {$zdatetime($zu(188),3,1,0)} ];
+        }
+
+### Unique values  for Cache fields/properties
+
+---
+
+        Index ucName On Name [ SqlName = uc_Name, Unique ];
+
+### Get properties of classes
+
+---
+
+        SELECT * FROM %dictionary.<PROPERTY>
+        WHERE Parent = '<PACKAGENAME>.<CLASSNAME>'
+        
+### Loop through / traverse a global (and its nodes)
+
+---
+
+The following example loops through a global and ^RIW and up to four levels ^RIW(L1,L2,L3,L4):
+
+	// //////////////////////////
+	s a=""
+	f  {
+		s a=$o(^RIW(a)) 
+		q:a=""
+
+		i $g(^RIW(a))'="" w ^RIW(a), !
+		
+		// //////////////////////////
+		s b=""
+		f {
+			s b=$o(^RIW(a,b))
+			q:b=""
+			
+			i $g(^RIW(a,b))'="" w ^RIW(a,b), !
+
+			// //////////////////////////
+			s c=""
+			f {
+				s c=$o(^RIW(a,b,c))
+				q:c=""
+				i $g(^RIW(a,b,c))'="" w ^RIW(a,b,c), !
+				
+				
+				// //////////////////////////
+				s d=""
+				f {
+					s d=$o(^RIW(a,b,c,d))
+					q:d=""
+					i $g(^RIW(a,b,c,d))'="" w ^RIW(a,b,c,d), !
+					
+				}
+				
+			}
+		}
+		
+		//}
+	}
+	q
