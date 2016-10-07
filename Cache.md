@@ -143,3 +143,39 @@ The following example loops through a global and ^RIW and up to four levels ^RIW
 		//}
 	}
 	q
+
+### String.format
+
+---
+
+String.format method in Cache like C#
+
+        ClassMethod f(pString As %String, pList As %List) As %String
+        {
+                Set s = pString
+                Set len = $LISTLENGTH(pList)
+                For i=1:1:len
+                {
+                        Set s = $Replace(s,"{" _ (i-1) _ "}", $LIST(pList,i))
+                }
+                Quit s
+        }
+
+TODO: Show an exmple usuage here
+
+### SQL-Based Development
+
+---
+
+It is possible to develop Caché applications using SQL-based tools, since Caché automatically creates a class definition from any relational tables defined using SQL DDL statements. **This approach does not exploit the full power of objects because you are limited by what DDL can express**; however, it is useful for migrating legacy applications.
+
+- http://localhost:57772/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_intro#GOBJ_intro_sqldev
+
+### SQL: Insert where not exist
+
+---
+        INSERT INTO DW_Monthly_Admission.MfIpWardBedComplement
+        (CostCentre, Ward)
+        SELECT '149952', 'C12' 
+        WHERE NOT EXISTS 
+        (SELECT * FROM DW_Monthly_Admission.MfIpWardBedComplement WHERE Ward = 'C12');
