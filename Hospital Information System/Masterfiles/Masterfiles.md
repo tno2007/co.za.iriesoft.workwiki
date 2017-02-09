@@ -2,13 +2,16 @@
 
 ## Masterfiles
 
-### List
-- A0358
-- b 
 
 ### Ward
 
     SELECT * FROM SQLUser.MFIPWARD
+
+
+### Hospital
+
+    SELECT * FROM SQLUser.MFGENHOSPDET;
+    SELECT * FROM SQLUser.MFGENHOSPDETMORE;
 
 ### Ward Bed Type
 
@@ -36,4 +39,11 @@
 
 ### Consultant
 
-    SELECT * FROM SQLUser.MFIPADMSOURCE
+    SELECT * FROM SQLUser.MFGENCONSULTANT
+
+### Specialty
+
+    SELECT * FROM SQLUser.PEC
+    SELECT * FROM SQLUser.CONSPEC
+
+###  

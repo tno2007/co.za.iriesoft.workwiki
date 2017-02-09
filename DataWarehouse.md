@@ -99,3 +99,10 @@ use sql for DW.
   sync PMI data from LIVE
 
  
+## Suggested Synonoms
+
+---
+
+## Specialty / Discipline
+## Episode / Visit / Encounter
+## 

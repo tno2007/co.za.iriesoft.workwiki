@@ -40,7 +40,7 @@
 
 ### Create a namespace in SMP
 ---
-        ENSEMBLE -> System Administration -> System Configuration -> Namespaces
+        ENSEMBLE -> System Administration -> Configuration -> System Configuration -> Namespaces
 
 ### ODBC vs ODBC35
 ---
@@ -89,7 +89,7 @@ So just delete or update these watch variables.
 
 ---
 
-        Index ucName On Name [ SqlName = uc_Name, Unique ];
+        Index ucName On Name [ Unique ];
 
 ### Get properties of classes
 
@@ -179,3 +179,141 @@ It is possible to develop Cach√© applications using SQL-based tools, since Cach√
         SELECT '149952', 'C12' 
         WHERE NOT EXISTS 
         (SELECT * FROM DW_Monthly_Admission.MfIpWardBedComplement WHERE Ward = 'C12');
+
+### Checking for empty string <EMPTY> from the database 
+
+---
+        If ($ASCII(Object.Field)=0)
+        {
+                Set settingValue = ""
+        }
+
+### Get Current TimeStamp
+
+---
+
+        Write $ZDT($ZU(188),3,1,3)
+
+### Date to/from string
+
+---
+
+        // ************************************************************************
+
+        Set horologDate = $HOROLOG
+        Write horologDate, !
+
+        // ************************************************************************
+
+        // String to date ($ZDATEH)
+        S StringToConvert = "20160211"   // YYYYMMDD
+        S DateFromString = $ZDATEH(StringToConvert, 8)
+        W DateFromString, !
+
+        S StringToConvert = "11/02/2016" // DD/MM/YYYY
+        S DateFromString = $ZDATEH(StringToConvert, 4)
+        W DateFromString, !
+
+        // ZDATEH
+        // 9	-	YYYYMMDD
+        // 1	-	MM/DD/YYYY
+        // 4	-	DD/MM/YYYY
+        // 3    -   YYYY-MM-DD
+
+        // ************************************************************************
+
+        // Date to string ($ZDATE)
+        S DateToConvert = $ZDATEH("11/02/2016", 4) // First make it a date
+        S StringFromDate = $ZDATE(DateToConvert, 8) // Now spit it out as string
+        W StringFromDate, !
+
+
+        S DateToConvert = $ZDATEH("11/02/2016", 4) // First make it a date
+        S StringFromDate = $ZDATE(DateToConvert, 3) // Now spit it out as string
+        W StringFromDate, !
+
+        // ZDATE
+        // 3	-	YYYY-MM-DD
+        // 4    -   DD/MM/YYYY
+        // 8    -   YYYYMMDD
+        // 1	-	MM/DD/YYYY
+
+### Map one-to-one relationship
+
+The table that hold the relation always en up with, (Cardinality = one)
+
+Example 1:
+
+One Person has always one gender. Person will hold this relation
+
+Person:
+
+        Relationship mfGender As DW.Masterfiles.mfGender [ Cardinality = one, Inverse = Person ];
+
+mfGender:
+
+        Relationship Person As DW.Modules.Pmi.Person [ Cardinality = many, Inverse = mfGender ];
+
+Example 2:
+
+One Patient is always only one Person. Patient table will the relation
+
+Patient: 
+
+        Relationship Person As Person [ Cardinality = one, Inverse = Patient ];
+
+Person:
+
+Relationship Patient As Patient [ Cardinality = many, Inverse = Person ];
+        
+
+### Map one-to-many relationship
+
+This has (Person)
+
+        Relationship PersonAddress As PersonAddress [ Cardinality = many, Inverse = Person ];
+
+Many-Of-This (Patient)
+        
+        Relationship Person As Person [ Cardinality = one, Inverse = PersonAddress ];
+
+### SQL Transaction in ObjectScript
+
+---
+
+        ##sql(START TRANSACTION)
+        Set sc = 1
+        If (sc)
+        {
+            ##sql(COMMIT WORK)  
+        }
+        Else
+        {
+            ##sql(ROLLBACK WORK)
+        }
+        
+### Custom errors
+
+        CreateCustomErrors
+                SET st1 = $System.Status.Error(83,"my unique error")
+                SET st2 = $System.Status.Error(5001,"my unique error")
+                SET allstatus = $System.Status.AppendStatus(st1,st2)
+        DisplayErrors
+                WRITE "All together:",!
+                WRITE $System.Status.GetErrorText(allstatus),!!
+                WRITE "One by one",!
+                WRITE "First error format:",!
+                WRITE $System.Status.GetOneStatusText(allstatus,1),!
+                WRITE "Second error format:",!
+                WRITE $System.Status.GetOneStatusText(allstatus,2),!
+
+### Exit a While loops
+
+        While (rs.Next())
+        {
+                
+                If(condition)
+                {
+
+                }
+        }
