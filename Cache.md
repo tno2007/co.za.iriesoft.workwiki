@@ -61,7 +61,9 @@ By default, the location of file is %PUBLIC%\Logs\, where the %PUBLIC% syntax sp
 
 ### ERROR #6022: Gateway failed: PrepareW.
 ---
-This might be because of a non-existant table in your SQL query, but could also be because of other errors.
+This might be because of a non-existant table in your SQL query, or an incorrect sql query, but could also be because of other errors.
+
+Take the sql from your objectscript and execute it in dbvis to figure out if the query's syntax is correct or not.
 
 To see the actual error, enable 'OBDC Logging' checkbox in the ODBC configuration.
 
