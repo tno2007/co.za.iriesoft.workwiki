@@ -319,3 +319,21 @@ Many-Of-This (Patient)
 
                 }
         }
+
+### HttpRequest via Cache/ENSEMBLE
+
+---
+
+        Method SetHeader(name As %String, value As %String) As %Status
+
+        class %Net.HttpRequest
+
+        Method SendFormData(
+                Output pHttpResponse As %Net.HttpResponse, 
+                pOp As %String, pHttpRequestIn As %Net.HttpRequest, 
+                pFormVarNames As %String, 
+                pData...) As %Status [ CodeMode = expression ]
+        {
+
+        ..SendFormDataArray(.pHttpResponse,.pOp,.pHttpRequestIn,.pFormVarNames,.pData)
+        }
