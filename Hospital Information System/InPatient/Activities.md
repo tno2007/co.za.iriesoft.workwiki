@@ -1,0 +1,1 @@
+    SELECT * FROM SQLUser.SYSACTIVITIES where InternalPatientNumber = {0} and EpisodeNumber = {1}

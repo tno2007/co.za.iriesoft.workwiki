@@ -67,6 +67,12 @@ Take the sql from your objectscript and execute it in dbvis to figure out if the
 
 To see the actual error, enable 'OBDC Logging' checkbox in the ODBC configuration.
 
+### ERROR #6026: Gateway: Cannot allocate statement.: ,ZILLEGAL VALUE
+---
+
+The ODBC name may not have been created/configured yet.
+Check the the server/pc on which the Cache server run, has a ODBC defined.
+
 ### \<UNDEFINED>^DW.Modules.Pmi.Person.1 *resultSet
 ---
 You may have variabled set in your debugger 'watch'.
